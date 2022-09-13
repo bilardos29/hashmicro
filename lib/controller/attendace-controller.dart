@@ -1,9 +1,12 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:hashmicro/controller/usecase.dart';
 import 'package:hashmicro/model/attendance-model.dart';
 
-class AttendanceController implements UseCase {
+class AttendanceController extends ChangeNotifier implements UseCase {
+  List<AttendanceModel> listDataAttendance = [];
+
   @override
   AttendanceModel GetLocation() {
     // TODO: implement GetLocation
@@ -18,7 +21,13 @@ class AttendanceController implements UseCase {
     // TODO: implement Attendance
     AttendanceModel model = GetLocation();
     if (model.datetime != "") {
-      validateAttendance(model) ? onSuccess() : onError();
+
+      bool isValid = validateAttendance(model);
+      model.rejected = isValid;
+      model.note = !isValid ? 'Your attendance does not is tagging radius' : '';
+
+      listDataAttendance.add(model);
+      isValid ? onSuccess() : onError();
     } else {
       onError();
     }
