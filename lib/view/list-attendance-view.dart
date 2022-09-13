@@ -15,32 +15,25 @@ class _ListAttendanceViewState extends State<ListAttendanceView> {
   late AttendanceController controller;
 
   @override
-  void initState() {
-    super.initState();
-    controller = context.read<AttendanceController>();
-    controller.ListAttendance(() {
-      setState(() {});
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    controller = context.watch<AttendanceController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Attendance History"),
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: controller.listDataAttendance.isEmpty ? [
-            const Text("There is no record of attendance")
-          ] : controller.listDataAttendance
-              .map((item) => detailRow(item))
-              .toList(),
+          mainAxisAlignment: controller.listDataAttendance.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
+          children: controller.listDataAttendance.isEmpty
+              ? [const Text("There is no record of attendance")]
+              : controller.listDataAttendance
+                  .map((item) => detailRow(item))
+                  .toList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          controller.dataAttendance.clear();
           await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
             return const AttendanceView();
           }));
@@ -52,29 +45,27 @@ class _ListAttendanceViewState extends State<ListAttendanceView> {
   }
 
   Widget detailRow(AttendanceModel item) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
+    return Container(
+      color: Colors.black12,
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 1),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(item.datetime),
-                  Text("Attendance ${item.rejected ? 'rejected' : 'accepted'}"),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child:
-                    Text("Location tag : ${item.longitude}, ${item.latitude}"),
-              ),
+              Text(item.datetime),
+              Text("Attendance : ${item.rejected ? 'rejected' : 'accepted'}"),
             ],
           ),
-        ),
-        const Divider(height: 1, color: Colors.black12)
-      ],
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text("Location tag : ${item.longitude}, ${item.latitude}"),
+          ),
+        ],
+      ),
     );
   }
 }

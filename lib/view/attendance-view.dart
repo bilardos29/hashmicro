@@ -18,11 +18,11 @@ class _AttendanceViewState extends State<AttendanceView> {
   @override
   void initState() {
     super.initState();
-    controller = context.read<AttendanceController>();
   }
 
   @override
   Widget build(BuildContext context) {
+    controller = Provider.of<AttendanceController>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Attendance"),
@@ -38,7 +38,11 @@ class _AttendanceViewState extends State<AttendanceView> {
             ButtonWidget(
                 text: "Get Location",
                 onClick: () {
-                  controller.GetLocation();
+                  controller.GetLocation(onSuccess: () {
+                    setState(() {});
+                  }, onError: () {
+                    _showMessage("Location Permission Denied");
+                  });
                 }),
             padding(12),
             ButtonWidget(
@@ -47,11 +51,7 @@ class _AttendanceViewState extends State<AttendanceView> {
                   controller.Attendance(onSuccess: () {
                     Navigator.of(context).pop();
                   }, onError: () {
-                    DialogMessage(
-                        message: controller.dataAttendance.note,
-                        onDone: () {
-                          Navigator.of(context).pop();
-                        });
+                    _showMessage(controller.dataAttendance.note);
                   });
                 }),
           ]),
@@ -67,5 +67,17 @@ class _AttendanceViewState extends State<AttendanceView> {
 
   Padding padding(double size) {
     return Padding(padding: EdgeInsets.only(bottom: size));
+  }
+
+  _showMessage(String msg) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return DialogMessage(
+              message: msg,
+              onDone: () {
+                Navigator.of(context).pop();
+              });
+        });
   }
 }

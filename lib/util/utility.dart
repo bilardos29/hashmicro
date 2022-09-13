@@ -14,7 +14,7 @@ class Utility {
             (1 - cos((endLongitude - startLongitude) * p)) /
             2;
 
-    //return in kilometer
+    //return in km
     return 12742 * asin(sqrt(a));
   }
 }

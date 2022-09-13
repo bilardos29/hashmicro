@@ -4,5 +4,5 @@ class UseCase {
 
   void Attendance({required VoidCallback onSuccess, required VoidCallback onError}) {}
 
-  void GetLocation() {}
+  void GetLocation({required VoidCallback onSuccess, required VoidCallback onError}) {}
 }
