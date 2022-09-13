@@ -11,30 +11,34 @@ class ListAttendanceView extends StatefulWidget {
 }
 
 class _ListAttendanceViewState extends State<ListAttendanceView> {
-
   late AttendanceController controller;
 
   @override
   void initState() {
     super.initState();
     controller = context.read<AttendanceController>();
+    controller.ListAttendance(() {
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Attendance History"),
+        title: const Text("Attendance History"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: controller.listDataAttendance.map((item) => detailRow(item)).toList(),
+          children: controller.listDataAttendance
+              .map((item) => detailRow(item))
+              .toList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
-        tooltip: 'Increment',
+        onPressed: () {},
+        tooltip: 'Add Attendance',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -43,13 +47,26 @@ class _ListAttendanceViewState extends State<ListAttendanceView> {
   Widget detailRow(AttendanceModel item) {
     return Column(
       children: [
-        Row(
-          children: [
-            Text(item.datetime),
-            Text("Attendace ${item.rejected ? 'rejected' : 'accepted'}"),
-          ],
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(item.datetime),
+                  Text("Attendance ${item.rejected ? 'rejected' : 'accepted'}"),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child:
+                    Text("Location tag : ${item.longitude}, ${item.latitude}"),
+              ),
+            ],
+          ),
         ),
-        Text("Location tag : ${item.longitude}, ${item.latitude}"),
+        const Divider(height: 1, color: Colors.black12)
       ],
     );
   }

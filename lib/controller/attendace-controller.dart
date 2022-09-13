@@ -6,31 +6,13 @@ import 'package:hashmicro/model/attendance-model.dart';
 
 class AttendanceController extends ChangeNotifier implements UseCase {
   List<AttendanceModel> listDataAttendance = [];
+  AttendanceModel dataAttendance = AttendanceModel(longitude: 0, latitude: 0, datetime: "");
 
   @override
-  AttendanceModel GetLocation() {
+  void GetLocation() {
     // TODO: implement GetLocation
-    AttendanceModel data =
-        AttendanceModel(longitude: 0, latitude: 0, datetime: "");
-
-    return data;
-  }
-
-  @override
-  void Attendance(VoidCallback onSuccess, VoidCallback onError) {
-    // TODO: implement Attendance
-    AttendanceModel model = GetLocation();
-    if (model.datetime != "") {
-
-      bool isValid = validateAttendance(model);
-      model.rejected = isValid;
-      model.note = !isValid ? 'Your attendance does not is tagging radius' : '';
-
-      listDataAttendance.add(model);
-      isValid ? onSuccess() : onError();
-    } else {
-      onError();
-    }
+    dataAttendance = AttendanceModel(longitude: 0, latitude: 0, datetime: "");
+    notifyListeners();
   }
 
   @override
@@ -45,5 +27,23 @@ class AttendanceController extends ChangeNotifier implements UseCase {
       return false;
     }
     return false;
+  }
+
+  @override
+  void Attendance({required VoidCallback onSuccess, required VoidCallback onError}) {
+    // TODO: implement Attendance
+    if (dataAttendance.datetime != "") {
+
+      bool isValid = validateAttendance(dataAttendance);
+      dataAttendance.rejected = isValid;
+      dataAttendance.note = !isValid ? 'Your attendance does not in tagging radius' : '';
+
+      listDataAttendance.add(dataAttendance);
+      dataAttendance.clear();
+      notifyListeners();
+      isValid ? onSuccess() : onError();
+    } else {
+      onError();
+    }
   }
 }
