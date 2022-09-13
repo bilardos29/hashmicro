@@ -14,5 +14,5 @@ class MasterLocationModel {
 }
 
 var listTagging = {
-  MasterLocationModel(id: 1, longitude: 1, latitude: 1, address: "address", active: true)
+  MasterLocationModel(id: 1, longitude: 106.376013, latitude: -6.341790, address: "", active: true)
 };
