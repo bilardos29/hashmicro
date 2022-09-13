@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hashmicro/controller/attendace-controller.dart';
 import 'package:hashmicro/model/attendance-model.dart';
+import 'package:hashmicro/view/attendance-view.dart';
 import 'package:provider/provider.dart';
 
 class ListAttendanceView extends StatefulWidget {
@@ -31,13 +32,19 @@ class _ListAttendanceViewState extends State<ListAttendanceView> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: controller.listDataAttendance
+          children: controller.listDataAttendance.isEmpty ? [
+            const Text("There is no record of attendance")
+          ] : controller.listDataAttendance
               .map((item) => detailRow(item))
               .toList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          await Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+            return const AttendanceView();
+          }));
+        },
         tooltip: 'Add Attendance',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

@@ -28,28 +28,34 @@ class _AttendanceViewState extends State<AttendanceView> {
         title: const Text("Add Attendance"),
       ),
       body: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text("Longitude : ${controller.dataAttendance.longitude}"),
-          Text("Latitude : ${controller.dataAttendance.latitude}"),
-          ButtonWidget(
-              text: "Get Location",
-              onClick: () {
-                controller.GetLocation();
-              }),
-          ButtonWidget(
-              text: "Submit",
-              onClick: () {
-                controller.Attendance(onSuccess: () {
-                  Navigator.of(context).pop();
-                }, onError: () {
-                  DialogMessage(
-                      message: controller.dataAttendance.note,
-                      onDone: () {
-                        Navigator.of(context).pop();
-                      });
-                });
-              }),
-        ]),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text("Longitude : ${controller.dataAttendance.longitude}"),
+            padding(12),
+            Text("Latitude : ${controller.dataAttendance.latitude}"),
+            padding(12),
+            ButtonWidget(
+                text: "Get Location",
+                onClick: () {
+                  controller.GetLocation();
+                }),
+            padding(12),
+            ButtonWidget(
+                text: "Submit",
+                onClick: () {
+                  controller.Attendance(onSuccess: () {
+                    Navigator.of(context).pop();
+                  }, onError: () {
+                    DialogMessage(
+                        message: controller.dataAttendance.note,
+                        onDone: () {
+                          Navigator.of(context).pop();
+                        });
+                  });
+                }),
+          ]),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -57,5 +63,9 @@ class _AttendanceViewState extends State<AttendanceView> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Padding padding(double size) {
+    return Padding(padding: EdgeInsets.only(bottom: size));
   }
 }

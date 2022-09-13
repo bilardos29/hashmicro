@@ -12,15 +12,14 @@ class ButtonWidget extends StatelessWidget {
     return InkWell(
       onTap: onClick,
       child: Container(
-        width: 50,
         height: 50,
         decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-            color: Color(0xffA7131B)),
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            color: Colors.blueAccent),
         alignment: Alignment.center,
         child: Text(
           text,
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );
